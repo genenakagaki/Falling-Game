@@ -10,8 +10,8 @@ public abstract class PolygonModel2D {
 
 	int angle;
 	
-	int[][] xCoord = getXCoords();
-	int[][] yCoord = getYCoords();
+	int[][] xCoords = getXCoords();
+	int[][] yCoords = getYCoords();
 	
 	public PolygonModel2D(int x, int y, int angle){
 		this.x = x;
@@ -32,11 +32,11 @@ public abstract class PolygonModel2D {
 		double cosA = Lookup.cos[angle];
 		double sinA = Lookup.sin[angle];
 		
-		for (int poly = 0; poly < xCoord.length; poly++){
+		for (int poly = 0; poly < xCoords.length; poly++){
 
 			for (int i = 0; i < xRotated.length; i++){
-				xRotated[i] = (int)(xCoord[poly][i] * cosA - yCoord[poly][i] * sinA);
-				yRotated[i] = (int)(xCoord[poly][i] * sinA + yCoord[poly][i] * cosA);
+				xRotated[i] = (int)(xCoords[poly][i] * cosA - yCoords[poly][i] * sinA);
+				yRotated[i] = (int)(xCoords[poly][i] * sinA + yCoords[poly][i] * cosA);
 			}
 			
 			// current x and y points
@@ -50,17 +50,27 @@ public abstract class PolygonModel2D {
 			g.drawPolygon(xCurrent, yCurrent, 4);
 		}
 	}
-	
-	public void moveForwardBy(int dist){
+
+	public void moveForwardBy(int dist, int angle){
 		xDouble += (dist * Lookup.cos[angle]);
 		yDouble += (dist * Lookup.sin[angle]);
 		x = (int)xDouble;
 		y = (int)yDouble;
 	}
 	
+	public void moveForwardBy(int dist){
+		moveForwardBy(dist, angle);
+	}
+	
+	public void moveBackwardBy(int dist, int angle){
+		xDouble -= (dist * Lookup.cos[angle]);
+		yDouble -= (dist * Lookup.sin[angle]);
+		x = (int)xDouble;
+		y = (int)yDouble;
+	}
+	
 	public void moveBackwardBy(int dist){
-		x -= (int)(dist * Lookup.cos[angle]);
-		y -= (int)(dist * Lookup.sin[angle]);
+		moveBackwardBy(dist, angle);
 	}
 	
 	public void rotateRightBy(int degrees){

@@ -7,20 +7,24 @@ public class GameFramework extends Applet implements Runnable, KeyListener{
 	
 	Thread t = new Thread(this);
 
-	boolean pressedUP = false;
-	boolean pressedDN = false;
-	boolean pressedLT = false;
-	boolean pressedRT = false;
-	
+	boolean W_pressed = false;
+	boolean S_pressed = false;
 	boolean A_pressed = false;
 	boolean D_pressed = false;
 	
+	boolean LT_pressed = false;
+	boolean RT_pressed = false;
+			
 	AARect r1 = new AARect(10, 10, 100, 260);
 	Tank tank = new Tank(100, 100, 90);
+	
+	Audio audio;
 	
 	public void init(){
 		this.resize(800, 800);
 		addKeyListener(this);
+		
+		audio = new Audio(this);
 		
 		requestFocus();
 		
@@ -33,16 +37,15 @@ public class GameFramework extends Applet implements Runnable, KeyListener{
 		long timeDiff;
 		
 		while(true){
-			if (pressedUP) tank.moveForwardBy(1);
-			if (pressedDN) tank.moveBackwardBy(2);
-			if (pressedLT) tank.rotateLeftBy(2);
-			if (pressedRT) tank.rotateRightBy(2);
+			if (W_pressed) tank.moveForwardBy(1);
+			if (S_pressed) tank.moveBackwardBy(2);
+			if (A_pressed) tank.rotateLeftBy(1);
+			if (D_pressed) tank.rotateRightBy(1);
 			
-			if (A_pressed) tank.rotateGunLeftBy(2);
-			if (D_pressed) tank.rotateGunRightBy(2);
-			
-			
-			
+			if (LT_pressed) tank.gun.rotateLeftBy(2);
+			if (RT_pressed) tank.gun.rotateRightBy(2);
+						
+			tank.gun.update();
 			repaint();
 			
 			timeDiff = System.currentTimeMillis() - startTime;
@@ -64,22 +67,25 @@ public class GameFramework extends Applet implements Runnable, KeyListener{
 	public void keyPressed(KeyEvent e) {
 		int code = e.getKeyCode();
 		
-		if (code == e.VK_UP)    pressedUP = true;
-		if (code == e.VK_DOWN)  pressedDN = true;
-		if (code == e.VK_LEFT)  pressedLT = true;
-		if (code == e.VK_RIGHT) pressedRT = true;
+		if (code == e.VK_W)     W_pressed = true;
+		if (code == e.VK_S)     S_pressed = true;
 		if (code == e.VK_A)     A_pressed = true;
 		if (code == e.VK_D)     D_pressed = true;
+		if (code == e.VK_LEFT)  LT_pressed = true;
+		if (code == e.VK_RIGHT) RT_pressed = true;
+		if (code == e.VK_SHIFT) tank.boost = true;
 	}
 
 	public void keyReleased(KeyEvent e) {
 		int code = e.getKeyCode();
 		
-		if (code == e.VK_UP)    pressedUP = false;
-		if (code == e.VK_DOWN)  pressedDN = false;
-		if (code == e.VK_LEFT)  pressedLT = false;
-		if (code == e.VK_RIGHT) pressedRT = false;
+		if (code == e.VK_W)     W_pressed = false;
+		if (code == e.VK_S)     S_pressed = false;
 		if (code == e.VK_A)     A_pressed = false;
 		if (code == e.VK_D)     D_pressed = false;
+		if (code == e.VK_LEFT)  LT_pressed = false;
+		if (code == e.VK_RIGHT) RT_pressed = false;
+		if (code == e.VK_SHIFT) tank.boost = false;
+		if (code == e.VK_SPACE) tank.shoot(this);
 	}	
 }
