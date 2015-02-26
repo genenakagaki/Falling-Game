@@ -1,4 +1,5 @@
 import java.awt.Graphics;
+import java.awt.Color;
 
 public class Gun extends PolygonModel2D{
 	
@@ -10,20 +11,41 @@ public class Gun extends PolygonModel2D{
 	
 	public int[][] getXCoords(){
 		int[][] xCoords = {
-			{60, 60, 20, 20},
 			{0, 20, 20, 0},
-			{-25, 0, 0, -25}
+			{0, 18, 18, 0},
+			{-25, 0, 0, -25},
+			{-25, 0, 0, -25},
+			{60, 60, 18, 18},
+			{60, 60, 18, 18},
+			{60, 60, 18, 18}
 		};
 		return xCoords;
 	}
 	
 	public int[][] getYCoords(){
 		int[][] yCoords= {
-			{4, -4, -4, 4},
 			{20, 10, -10, -20},
-			{10, 20, -20, -10}
+			{17, 7, -7, -17},
+			{10, 20, -20, -10},
+			{7, 17, -17, -7},
+			{4, -4, -4, 4},
+			{4, 2, 2, 4},
+			{-2, -4, -4, -2}
 		};
 		return yCoords;
+	}
+	
+	public Color[] getColors(){
+		Color[] colors = {
+			new Color(200, 180, 30),
+			new Color(220, 200, 50),
+			new Color(200, 220, 120),
+			new Color(220, 240, 140),
+			new Color(240, 210, 20),
+			new Color(220, 190, 15),
+			new Color(220, 190, 15)
+		};
+		return colors;
 	}
 	
 	public Gun(int x, int y, int angle){
@@ -45,11 +67,11 @@ public class Gun extends PolygonModel2D{
 		}
 	}
 	
-	public void draw(Graphics g){
-		super.draw(g);
+	public void draw(Graphics g, double zoom){
+		super.draw(g, zoom);
 		
 		for (int i = 0; i < bullet.length; i++){
-			bullet[i].draw(g);
+			bullet[i].draw(g, zoom);
 		}
 	}
 	

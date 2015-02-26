@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.awt.Color;
 
 public class Projectile extends PolygonModel2D{
 	
@@ -20,14 +21,22 @@ public class Projectile extends PolygonModel2D{
 		return yCoords;
 	}
 	
+	public Color[] getColors(){
+		Color[] colors = {
+			Color.magenta,
+			Color.red
+		};
+		return colors;
+	}
+	
 	public Projectile(int x, int y, int angle){
 		super(x, y, angle);
 		shot = false;
 	}
 	
-	public void draw(Graphics g){
+	public void draw(Graphics g, double zoom){
 		if (shot){
-			super.draw(g);
+			super.draw(g, zoom);
 			moveForwardBy(20);
 		}
 	}

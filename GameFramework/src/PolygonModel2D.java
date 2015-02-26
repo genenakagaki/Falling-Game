@@ -1,17 +1,21 @@
 import java.awt.Graphics;
-import java.awt.Graphics;
+import java.awt.Color;
 
 public abstract class PolygonModel2D {
 
 	int x;
 	int y;
+	int polyLength;
 	double xDouble;
 	double yDouble;
 
 	int angle;
 	
+	double zoom;
+	
 	int[][] xCoords = getXCoords();
 	int[][] yCoords = getYCoords();
+	Color[] colors = getColors();
 	
 	public PolygonModel2D(int x, int y, int angle){
 		this.x = x;
@@ -24,15 +28,16 @@ public abstract class PolygonModel2D {
 	
 	public abstract int[][] getXCoords();
 	public abstract int[][] getYCoords();
+	public abstract Color[] getColors();
 	
-	public void draw(Graphics g){
-		int[] xRotated = new int[4];
-		int[] yRotated = new int[4];
-		
+	public void draw(Graphics g, double zoom){
 		double cosA = Lookup.cos[angle];
 		double sinA = Lookup.sin[angle];
 		
 		for (int poly = 0; poly < xCoords.length; poly++){
+			polyLength = xCoords[poly].length;
+			int[] xRotated = new int[polyLength];
+			int[] yRotated = new int[polyLength];
 
 			for (int i = 0; i < xRotated.length; i++){
 				xRotated[i] = (int)(xCoords[poly][i] * cosA - yCoords[poly][i] * sinA);
@@ -40,14 +45,18 @@ public abstract class PolygonModel2D {
 			}
 			
 			// current x and y points
-			int[] xCurrent = new int[4];
-			int[] yCurrent = new int[4];
+			int[] xCurrent = new int[polyLength];
+			int[] yCurrent = new int[polyLength];
 			
 			for (int i = 0; i < xRotated.length; i++){
-				xCurrent[i] = xRotated[i] + x;
-				yCurrent[i] = yRotated[i] + y;
+				xCurrent[i] = (int)((xRotated[i] + x) * zoom);
+				yCurrent[i] = (int)((yRotated[i] + y) * zoom);
 			}
-			g.drawPolygon(xCurrent, yCurrent, 4);
+			
+			g.setColor(colors[poly]);
+			g.drawPolygon(xCurrent, yCurrent, polyLength);
+			g.setColor(colors[poly]);
+		    g.fillPolygon(xCurrent, yCurrent, polyLength);
 		}
 	}
 
