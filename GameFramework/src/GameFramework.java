@@ -58,7 +58,6 @@ public class GameFramework extends Applet implements Runnable, KeyListener{
 	}
 	
 	public void run() {
-		System.out.println("hi"+ paused);
 		long startTime = System.currentTimeMillis();
 		long timeDiff;
 		
@@ -72,10 +71,16 @@ public class GameFramework extends Applet implements Runnable, KeyListener{
 				if (LT_pressed) tank.gun.rotateLeftBy(2);
 				if (RT_pressed) tank.gun.rotateRightBy(2);
 					
+//				if (W_pressed) c.moveForwardBy(5);
+//				if (S_pressed) c.moveBackwardBy(5);
+//				if (A_pressed) c.rotateLeftBy(2);
+//				if (D_pressed) c.rotateRightBy(2);
 			
 				tank.gun.update();
 				repaint();
 			}
+			
+			
 			
 			timeDiff = System.currentTimeMillis() - startTime;
 						
@@ -104,6 +109,11 @@ public class GameFramework extends Applet implements Runnable, KeyListener{
 
 	public void paint(Graphics g){
 		tank.draw(g, zoom);
+		
+//		line.draw(g);
+//		c.draw(g);
+//		double d = line.distanceTo(c.x, c.y);
+//		g.drawString("Collision = " + c.hasCollidedWith(line), 10, 30);
 	}
 	
 	public void pause() {
