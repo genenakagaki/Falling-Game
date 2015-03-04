@@ -4,8 +4,8 @@ public class Circle {
 
 	int x;
 	int y;
-	int xDouble;
-	int yDouble;
+	double xDouble;
+	double yDouble;
 	
 	int r;
 	
@@ -15,6 +15,8 @@ public class Circle {
 		this.x = x;
 		this.y = y;
 		this.r = r;
+		this.xDouble = x;
+		this.yDouble = y;
 	}
 	
 	public void draw(Graphics g){
@@ -30,17 +32,37 @@ public class Circle {
 		return line.distanceTo(x, y) <= r;
 	}
 	
+	public boolean isToLeftOf(Circle c){
+		double xc = Lookup.cos[c.angle];
+		double yc = Lookup.sin[c.angle];
+		
+		return (x - c.x) * yc - (y - c.y) * xc > 10;
+	}
 	
+	public boolean isToRightOf(Circle c){
+		double xc = Lookup.cos[c.angle];
+		double yc = Lookup.sin[c.angle];
+		
+		return (x - c.x) * yc - (y - c.y) * xc < -10;
+	}
 	
-	public void moveForwardBy(int dist, int angle){
-		xDouble += (dist * Lookup.cos[angle]);
-		yDouble += (dist * Lookup.sin[angle]);
+	public void moveBy(int dist, int degrees){
+		
+		if (degrees >= 360){
+			degrees -= 360;
+		}
+		else if (degrees < 0){
+			degrees += 360;
+		}
+		
+		xDouble += (dist * Lookup.cos[degrees]);
+		yDouble += (dist * Lookup.sin[degrees]);
 		x = (int)xDouble;
 		y = (int)yDouble;
 	}
 	
 	public void moveForwardBy(int dist){
-		moveForwardBy(dist, angle);
+		moveBy(dist, angle);
 	}
 	
 	public void moveBackwardBy(int dist, int angle){
