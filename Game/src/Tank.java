@@ -2,7 +2,7 @@ import java.awt.Graphics;
 
 public class Tank extends PolygonModel2D{
 	
-	boolean boost;
+	private boolean boost;
 	
 	Gun gun;
 	
@@ -49,18 +49,16 @@ public class Tank extends PolygonModel2D{
 		}
 	}
 	
-	public void shoot(GameFramework game){
+	public void shoot(){
 		if (!gun.reloading && !boost){
 			gun.shoot();
 			
-			moveBy(5, gun.angle);
+			moveBy(-5, gun.angle);
 			gun.moveBackwardBy(9);
 			
 			recoilCount = 9;
 			recoilAngle = gun.angle;
-			
-			game.audio.shoot1AC.play();
-		}	
+		}
 	}
 	
 	public void moveForwardBy(int dist){
@@ -74,7 +72,7 @@ public class Tank extends PolygonModel2D{
 	
 	public void moveBackwardBy(int dist){
 		super.moveBackwardBy(dist);
-		gun.moveBy(dist, angle);
+		gun.moveBy(-dist, angle);
 	}
 	
 	public void rotateLeftBy(int degrees){
@@ -85,5 +83,13 @@ public class Tank extends PolygonModel2D{
 	public void rotateRightBy(int degrees){
 		super.rotateRightBy(degrees);
 		gun.rotateRightBy(degrees);
+	}
+	
+	public void setBoost(boolean boost){
+		this.boost = boost;
+	}
+	
+	public Gun getGun(){
+		return gun;
 	}
 }

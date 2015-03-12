@@ -3,7 +3,7 @@ import java.awt.Graphics;
 public class Gun extends PolygonModel2D{
 	
 	boolean reloading;
-	long reloadCount;
+	int reloadCount;
 
 	Projectile[] bullet = new Projectile[1000];
 	int ammo;
@@ -75,7 +75,7 @@ public class Gun extends PolygonModel2D{
 		}
 		else{	
 			reloading = true;
-			reloadCount = 80;
+			reloadCount = 40;
 		}
 	}
 }

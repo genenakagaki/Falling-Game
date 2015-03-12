@@ -1,7 +1,7 @@
-import java.awt.*;
+import java.awt.Graphics;
 
-public class Circle {
-
+public class NPC extends PolygonModel2D {
+	
 	double x;
 	double y;
 	
@@ -9,10 +9,16 @@ public class Circle {
 	
 	int angle = 10;
 	
-	public Circle(int x, int y, int r){
-		this.x = x;
-		this.y = y;
-		this.r = r;
+	public NPC(int x, int y, int angle) {
+		super(x, y, angle);
+	}
+
+	public int[][] getXCoords() {
+		return null;
+	}
+
+	public int[][] getYCoords() {
+		return null;
 	}
 	
 	public void draw(Graphics g){
@@ -88,3 +94,4 @@ public class Circle {
 		}
 	}
 }
+

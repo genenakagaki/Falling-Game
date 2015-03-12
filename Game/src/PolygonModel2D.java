@@ -1,5 +1,4 @@
 import java.awt.Graphics;
-import java.awt.Graphics;
 
 public abstract class PolygonModel2D {
 
@@ -47,14 +46,7 @@ public abstract class PolygonModel2D {
 		}
 	}
 
-	public void moveBy(int dist, int angle){
-		if (angle >= 360){
-			angle -= 360;
-		}
-		else if (angle < 0){
-			angle += 360;
-		}
-		
+	public void moveBy(int dist, int angle){	
 		x += (dist * Lookup.cos[angle]);
 		y += (dist * Lookup.sin[angle]);
 	}
@@ -64,22 +56,29 @@ public abstract class PolygonModel2D {
 	}
 	
 	public void moveBackwardBy(int dist){
-		if (angle >= 360){
-			angle -= 360;
-		}
-		else if (angle < 0){
-			angle += 360;
-		}
-		
 		x -= (dist * Lookup.cos[angle]);
 		y -= (dist * Lookup.sin[angle]);
 	}
 	
 	public void rotateRightBy(int degrees){
 		this.angle += degrees;
+		
+		if (angle >= 360){
+			angle -= 360;
+		}
+		else if (angle < 0){
+			angle += 360;
+		}
 	}
 	
 	public void rotateLeftBy(int degrees){
 		this.angle -= degrees;
+		
+		if (angle >= 360){
+			angle -= 360;
+		}
+		else if (angle < 0){
+			angle += 360;
+		}
 	}
 }
