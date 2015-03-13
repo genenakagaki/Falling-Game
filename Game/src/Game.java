@@ -20,8 +20,6 @@ public class Game{
 		new DisplayMode( 800, 600, 16, 0)
 	};
 	
-	private boolean running;
-	
 	private ScreenManager screen;
 	private Image bgImage;
 	
@@ -33,7 +31,10 @@ public class Game{
 	boolean RT_pressed  = false;
 	boolean ESC_pressed = false;
 	
+	boolean running;
+	
 	Tank tank;
+	Tank enemyTank;
 	
 	public void run(){
 		screen = new ScreenManager();
@@ -54,7 +55,9 @@ public class Game{
 	
 	public void initialize(){
 		loadImages();
+		
 		tank = new Tank(40, 40, 0);
+		enemyTank = new Tank(300, 300, 0);
 	}
 	
 	public void loadImages(){
@@ -82,13 +85,11 @@ public class Game{
 		}
 	}
 	
-	public void draw(Graphics g){
-		g.drawImage(bgImage, 0, 0, null);
-		tank.draw(g);
-	}
-	
 	public void gameUpdate(){
-		tank.gun.update();
+		tank.getGun().update();
+		
+		enemyTank.turnTowards(tank, 1);
+		
 		
 		if (W_pressed) tank.moveForwardBy(5);
 		if (S_pressed) tank.moveBackwardBy(3);
@@ -99,6 +100,13 @@ public class Game{
 		if (RT_pressed) tank.getGun().rotateRightBy(2);
 		
 		if (ESC_pressed) running = false;
+	}
+	
+	public void draw(Graphics g){
+		g.drawImage(bgImage, 0, 0, null);
+		
+		tank.draw(g);
+		enemyTank.draw(g);
 	}
 
 	public class GameKeyListener implements KeyListener{

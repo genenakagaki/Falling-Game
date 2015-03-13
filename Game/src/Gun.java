@@ -1,6 +1,6 @@
 import java.awt.Graphics;
 
-public class Gun extends PolygonModel2D{
+public class Gun extends PolygonModel{
 	
 	boolean reloading;
 	int reloadCount;

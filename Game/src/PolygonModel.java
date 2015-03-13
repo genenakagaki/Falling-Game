@@ -1,6 +1,6 @@
 import java.awt.Graphics;
 
-public abstract class PolygonModel2D {
+public abstract class PolygonModel {
 
 	public double x;
 	public double y;
@@ -10,7 +10,7 @@ public abstract class PolygonModel2D {
 	public int[][] xCoords = getXCoords();
 	public int[][] yCoords = getYCoords();
 	
-	public PolygonModel2D(int x, int y, int angle){
+	public PolygonModel(int x, int y, int angle){
 		this.x = x;
 		this.y = y;
 		
@@ -34,7 +34,6 @@ public abstract class PolygonModel2D {
 				yRotated[i] = xCoords[poly][i] * sinA + yCoords[poly][i] * cosA;
 			}
 			
-			// current x and y points
 			int[] xCurrent = new int[4];
 			int[] yCurrent = new int[4];
 			
@@ -80,5 +79,15 @@ public abstract class PolygonModel2D {
 		else if (angle < 0){
 			angle += 360;
 		}
+	}
+	
+	public double distanceTo(PolygonModel target){
+		double xc = Lookup.cos[angle];
+		double yc = Lookup.sin[angle];
+		 
+		int xu = (int)(target.x - x);
+		int yu = (int)(target.y - y);
+		
+		return xu * yc - xc * yu;
 	}
 }

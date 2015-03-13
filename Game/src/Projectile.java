@@ -1,6 +1,6 @@
 import java.awt.*;
 
-public class Projectile extends PolygonModel2D{
+public class Projectile extends PolygonModel{
 	
 	boolean shot;
 	

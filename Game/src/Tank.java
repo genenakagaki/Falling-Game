@@ -1,13 +1,13 @@
 import java.awt.Graphics;
 
-public class Tank extends PolygonModel2D{
+public class Tank extends PolygonModel implements AI{
 	
 	private boolean boost;
 	
-	Gun gun;
+	private Gun gun;
 	
-	int recoilCount;
-	int recoilAngle;
+	private int recoilCount;
+	private int recoilAngle;
 	
 	public int[][] getXCoords(){
 		int[][] xCoords = {
@@ -61,6 +61,9 @@ public class Tank extends PolygonModel2D{
 		}
 	}
 	
+	/* --------------------
+	       Overrides
+	 -------------------- */
 	public void moveForwardBy(int dist){
 		if (boost){
 			super.moveForwardBy(dist * 3);
@@ -88,7 +91,55 @@ public class Tank extends PolygonModel2D{
 	public void setBoost(boolean boost){
 		this.boost = boost;
 	}
+
 	
+	/* --------------------
+	      AI methods
+	-------------------- */
+	public void turnTowards(PolygonModel target, int degrees) {
+		double xc = Lookup.cos[angle];
+		double yc = Lookup.sin[angle];
+		
+		double angleToTarget = (target.x - x) * yc - (target.y - y) * xc;
+		
+		if (angleToTarget > 0){
+			if (angleToTarget > 10){
+				rotateLeftBy(degrees);
+			}
+			else if (angleToTarget > 5){
+				rotateLeftBy(degrees/2);
+			}
+			else{
+				rotateLeftBy(1);
+			}
+		}
+		else if (angleToTarget < 0){
+			if (angleToTarget < -10){
+				rotateRightBy(degrees);
+			}
+			else if (angleToTarget < -5){
+				rotateRightBy(degrees/2);
+			}
+			else{
+				rotateRightBy(1);
+			}
+		}
+	}
+	
+	public void moveTowards(PolygonModel target, int speed, int degrees){
+		if (distanceTo(target) > 0){
+			rotateLeftBy(degrees);
+			moveForwardBy(speed);
+		}
+		if (distanceTo(target) < 0){
+			rotateRightBy(degrees);
+			moveForwardBy(speed);
+		}
+	}
+	
+	/* ------------------------
+	    Get and Set methods
+	------------------------ */
 	public Gun getGun(){
 		return gun;
 	}
