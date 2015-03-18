@@ -10,7 +10,6 @@ public class Line {
 	
 	double xc;
 	double yc;
-	
 	double xn;
 	double yn;
 	

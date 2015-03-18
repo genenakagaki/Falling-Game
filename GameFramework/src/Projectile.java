@@ -1,27 +1,23 @@
 import java.awt.*;
+import java.util.LinkedList;
 
-public class Projectile extends PolygonModel2D{
+public class Projectile extends PolygonModel{
 	
 	boolean shot;
 	
-	public int[][] getXCoords(){
-		int[][] xCoords = {
-				{2, 4, 4, 2},
-				{-4, 2, 2, -4}
-		};
-		return xCoords;
+	public int[][] getCoords(String projectileFile){
+		LinkedList<String> coordsList = getFileContent(projectileFile);
+		return toInt2D(coordsList);
+	}
+
+	public Color[] getColors(String projectileFile){
+		LinkedList<String> colorList = getFileContent(projectileFile);
+		
+		return toColors(colorList);
 	}
 	
-	public int[][] getYCoords(){
-		int[][] yCoords = {
-				{4, 2, -2, -4},
-				{4, 4, -4, -4}
-		};
-		return yCoords;
-	}
-	
-	public Projectile(int x, int y, int angle){
-		super(x, y, angle);
+	public Projectile(int x, int y, int angle, String projectileFile){
+		super(x, y, angle, projectileFile);
 		shot = false;
 	}
 	

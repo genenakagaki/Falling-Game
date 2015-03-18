@@ -1,40 +1,36 @@
+import java.awt.Color;
 import java.awt.Graphics;
+import java.util.LinkedList;
 
-public class Gun extends PolygonModel2D{
+public class Gun extends PolygonModel{
 	
-	boolean reloading;
-	long reloadCount;
+	private boolean reloading;
+	private int reloadCount;
 
-	Projectile[] bullet = new Projectile[1000];
-	int ammo;
+	private Projectile[] bullet = new Projectile[1000];
+	private int ammo;
 	
-	public int[][] getXCoords(){
-		int[][] xCoords = {
-			{60, 60, 20, 20},
-			{0, 20, 20, 0},
-			{-25, 0, 0, -25}
-		};
-		return xCoords;
+	public int[][] getCoords(String gunCoordFile){
+		LinkedList<String> coordsList = getFileContent(gunCoordFile);
+		return toInt2D(coordsList);
 	}
-	
-	public int[][] getYCoords(){
-		int[][] yCoords= {
-			{4, -4, -4, 4},
-			{20, 10, -10, -20},
-			{10, 20, -20, -10}
-		};
-		return yCoords;
-	}
-	
-	public Gun(int x, int y, int angle){
-		super(x, y, angle);
+
+	public Color[] getColors(String gunFile){
+		LinkedList<String> colorList = getFileContent(gunFile);
 		
+		return toColors(colorList);
+	}
+	
+	public Gun(int x, int y, int angle, String gunFile){
+		super(x, y, angle, gunFile);
+			
 		reloading = false;
 		reloadCount = 0;
 		
 		for (int i = 0; i < bullet.length; i++){
-			bullet[i] = new Projectile(-10, -10, angle);
+			bullet[i] = new Projectile(-10, -10, angle, "tank/projectile");
 		}
+		
 		ammo = bullet.length;	
 	}
 	
@@ -55,7 +51,7 @@ public class Gun extends PolygonModel2D{
 	
 	public void shoot(){
 		if (ammo > 0){
-			bullet[ammo-1] = new Projectile((int)x, (int)y, angle);
+			bullet[ammo-1] = new Projectile((int)x, (int)y, angle, "tank/projectile");
 			bullet[ammo-1].moveForwardBy(60);
 			
 			bullet[ammo-1].shot = true;
@@ -75,7 +71,14 @@ public class Gun extends PolygonModel2D{
 		}
 		else{	
 			reloading = true;
-			reloadCount = 80;
+			reloadCount = 40;
 		}
+	}
+	
+	/* --------------------
+	    Boolean methods
+	-------------------- */
+	public boolean isReloading(){
+		return reloading;
 	}
 }

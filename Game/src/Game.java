@@ -9,6 +9,7 @@ public class Game{
 	public static void main(String[] args){
 		Game game = new Game();
 		game.run();
+		
 	}
 		
 	private DisplayMode[] DISPLAY_MODES = {
@@ -56,8 +57,8 @@ public class Game{
 	public void initialize(){
 		loadImages();
 		
-		tank = new Tank(40, 40, 0);
-		enemyTank = new Tank(300, 300, 0);
+		tank = new Tank(40, 40, 0, "tank/norrisTank");
+		enemyTank = new Tank(300, 300, 0, "tank/norrisTank");
 	}
 	
 	public void loadImages(){
@@ -87,9 +88,12 @@ public class Game{
 	
 	public void gameUpdate(){
 		tank.getGun().update();
+		enemyTank.getGun().update();
 		
-		enemyTank.turnTowards(tank, 1);
-		
+//		enemyTank.turnTowards(tank, 1);
+		enemyTank.moveTowards(tank, 1, 1);
+//		enemyTank.pointGunAt(tank, 1);
+		enemyTank.shootAt(tank, 1);
 		
 		if (W_pressed) tank.moveForwardBy(5);
 		if (S_pressed) tank.moveBackwardBy(3);
@@ -115,10 +119,10 @@ public class Game{
 		public void keyPressed(KeyEvent e) {
 			int code = e.getKeyCode();
 			
-			if (code == KeyEvent.VK_W)      W_pressed = true;
-			if (code == KeyEvent.VK_S)      S_pressed = true;
-			if (code == KeyEvent.VK_A)      A_pressed = true;
-			if (code == KeyEvent.VK_D)      D_pressed = true;
+			if (code == KeyEvent.VK_W)      W_pressed  = true;
+			if (code == KeyEvent.VK_S)      S_pressed  = true;
+			if (code == KeyEvent.VK_A)      A_pressed  = true;
+			if (code == KeyEvent.VK_D)      D_pressed  = true;
 			if (code == KeyEvent.VK_LEFT)   LT_pressed = true;
 			if (code == KeyEvent.VK_RIGHT)  RT_pressed = true;
 			if (code == KeyEvent.VK_SHIFT)  tank.setBoost(true);

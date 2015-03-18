@@ -1,4 +1,3 @@
-
 import java.awt.*;
 
 public class Line {
@@ -11,7 +10,6 @@ public class Line {
 	
 	double xc;
 	double yc;
-	
 	double xn;
 	double yn;
 	

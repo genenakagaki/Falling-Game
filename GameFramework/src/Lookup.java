@@ -1,4 +1,5 @@
 
+
 public class Lookup {
 	
 	public final static double sin[] = generateSine();
