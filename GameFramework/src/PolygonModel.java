@@ -9,6 +9,9 @@ public abstract class PolygonModel {
 	public double y;
 
 	public int angle;
+
+	public int width;
+	public int height;
 	
 	public int[][] xCoords;
 	public int[][] yCoords;
@@ -23,6 +26,9 @@ public abstract class PolygonModel {
 		xCoords = getCoords(fileName +"_x");
 		yCoords = getCoords(fileName +"_y");
 		colors  = getColors(fileName +"_color");
+		
+		width  = getMinToMax(yCoords);
+		height = getMinToMax(xCoords);
 	}
 	
 	public abstract int[][] getCoords(String file);
@@ -57,6 +63,24 @@ public abstract class PolygonModel {
 				g.fillPolygon(xCurrent, yCurrent, numPoints);
 			}
 		}
+	}
+	
+	private int getMinToMax(int[][] ints){
+		int min = 0;
+		int max = 0;
+		
+		for (int i = 0; i < ints.length; i++){
+			for (int j = 0; j < ints[i].length; j++){
+				if (ints[i][j] < min){
+					min = ints[i][j];
+				}
+				else if (ints[i][j] > max){
+					max = ints[i][j];
+				}
+			}
+		}
+		
+		return max + min;
 	}
 
 	/* --------------------
@@ -159,7 +183,7 @@ public abstract class PolygonModel {
 	}
 	
 	public int[][] toInt2D(LinkedList<String> list){
-		int[][] intsList = new int[list.size()][];
+		int[][] resultInts = new int[list.size()][];
 		for (int i = 0; i < list.size(); i++){
 			String str = list.get(i);
 			String intStr = "";
@@ -168,6 +192,7 @@ public abstract class PolygonModel {
 			
 			for (int j = 0; j < str.length(); j++){
 				if (str.charAt(j) == ','){
+					// insert the number in intStr to ints
 					if (intStr.charAt(0) == '-'){
 						ints.addLast(-Integer.parseInt(intStr.substring(1)));
 					}
@@ -177,20 +202,22 @@ public abstract class PolygonModel {
 					intStr = "";
 				}
 				else {
+					// append number to intStr
 					intStr = intStr + str.substring(j, j+1);
 				}
 			}
 			ints.addLast(Integer.parseInt(intStr));
 			
+			// convert linked list to int array
 			int[] intsArray = new int[ints.size()];
 			for (int j = 0; j < ints.size(); j++){
-				 intsArray [j] = ints.get(j);
+				intsArray [j] = ints.get(j);
 			}
 			
-			intsList[i] = intsArray;
+			resultInts[i] = intsArray;
 		}
 		
-		return intsList;
+		return resultInts;
 	}
 	
 	public Color[] toColors(LinkedList<String> list){
