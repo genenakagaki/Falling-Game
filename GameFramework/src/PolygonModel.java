@@ -9,14 +9,17 @@ public abstract class PolygonModel {
 	public double y;
 
 	public int angle;
-
-	public int width;
-	public int height;
 	
 	public int[][] xCoords;
 	public int[][] yCoords;
-	public Color[] colors;
+	public Color[] colors; 
 	
+	public int[][] xCurrent;
+	public int[][] yCurrent;
+	
+//	public int width;
+//	public int height;
+
 	public PolygonModel(int x, int y, int angle, String fileName){
 		this.x = x;
 		this.y = y;
@@ -27,60 +30,73 @@ public abstract class PolygonModel {
 		yCoords = getCoords(fileName +"_y");
 		colors  = getColors(fileName +"_color");
 		
-		width  = getMinToMax(yCoords);
-		height = getMinToMax(xCoords);
+		initCurrentCoords();
+		
+//		width = getWidth(yCoords);
+//		height = getWidth(xCoords);
+	}
+	
+//	private int getWidth(int[][] coords){
+//		int max = 0;
+//		int min = 0;
+//		for (int i = 0; i < coords.length; i++){
+//			for (int j = 0; j < coords[i].length; i++){
+//				if (coords[i][j] > max){
+//					max = coords[i][j];
+//				}
+//				else if (coords[i][j] < min){
+//					min = coords[i][j];
+//				}
+//			}
+//		}
+//		
+//		return max - min;
+//	}
+	
+	private void initCurrentCoords(){
+		xCurrent = new int[xCoords.length][];
+		yCurrent = new int[yCoords.length][];
+		
+		for (int i = 0; i < xCoords.length; i++){
+			int length = xCoords[i].length;
+			xCurrent[i] = new int[length];
+			yCurrent[i] = new int[length];
+		}
 	}
 	
 	public abstract int[][] getCoords(String file);
 	public abstract Color[] getColors(String file);
-	
-	public void draw(Graphics g){
 		
+	/* --------------------
+	      Game update
+	-------------------- */
+	public void update(){
 		double cosA = Lookup.cos[angle];
 		double sinA = Lookup.sin[angle];
 		
 		for (int poly = 0; poly < xCoords.length; poly++){
-			int numPoints = xCoords[poly].length;
-			double[] xRotated = new double[numPoints];
-			double[] yRotated = new double[numPoints];
+			int numCoords = xCoords[poly].length;
 			
-			for (int i = 0; i < numPoints; i++){
-				xRotated[i] = xCoords[poly][i] * cosA - yCoords[poly][i] * sinA;
-				yRotated[i] = xCoords[poly][i] * sinA + yCoords[poly][i] * cosA;
-			}
-			
-			int[] xCurrent = new int[numPoints];
-			int[] yCurrent = new int[numPoints];
-			
-			for (int i = 0; i < numPoints; i++){
-				xCurrent[i] = (int)(xRotated[i] + x);
-				yCurrent[i] = (int)(yRotated[i] + y);
-			}
-			
-			g.drawPolygon(xCurrent, yCurrent, numPoints);
-			if (colors[poly] != null){
-				g.setColor(colors[poly]);
-				g.fillPolygon(xCurrent, yCurrent, numPoints);
+			for (int i = 0; i < numCoords; i++){
+				double xRotated = xCoords[poly][i] * cosA - yCoords[poly][i] * sinA;
+				double yRotated = xCoords[poly][i] * sinA + yCoords[poly][i] * cosA;
+				
+				xCurrent[poly][i] = (int)(xRotated + x);
+				yCurrent[poly][i] = (int)(yRotated + y);
 			}
 		}
 	}
 	
-	private int getMinToMax(int[][] ints){
-		int min = 0;
-		int max = 0;
-		
-		for (int i = 0; i < ints.length; i++){
-			for (int j = 0; j < ints[i].length; j++){
-				if (ints[i][j] < min){
-					min = ints[i][j];
-				}
-				else if (ints[i][j] > max){
-					max = ints[i][j];
-				}
+	public void draw(Graphics g){
+		for (int poly = 0; poly < xCoords.length; poly++){
+			int numCoords = xCoords[poly].length;
+			
+			g.drawPolygon(xCurrent[poly], yCurrent[poly], numCoords);
+			if (colors[poly] != null){
+				g.setColor(colors[poly]);
+				g.fillPolygon(xCurrent[poly], yCurrent[poly], numCoords);
 			}
 		}
-		
-		return max + min;
 	}
 
 	/* --------------------
@@ -127,12 +143,16 @@ public abstract class PolygonModel {
 	    (Separating Axis theorem)
 	------------------------------ */
 //	public boolean hasCollidedWith(PolygonModel target){
-//		getnormal;
-//		
+//		int a;
+//		int b;
+//				
+//		for (int i = 0; i < 4; i++){
+//			
+//		}
 //	}
-//	
-//	
-//	public double distanceTo(PolygonModel target){
+	
+	 	
+//	public double distanceTo(PolygonModel target)
 //		double xc = Lookup.cos[angle];
 //		double yc = Lookup.sin[angle];
 //		 

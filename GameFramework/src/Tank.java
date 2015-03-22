@@ -11,6 +11,14 @@ public class Tank extends PolygonModel implements AI{
 	private int recoilCount;
 	private int recoilAngle;
 	
+	public Tank(int x, int y, int angle, String tankFile){
+		super(x, y, angle, tankFile);
+		
+		gun = new Gun(x, y, angle, "tank/norrisGun");
+		
+		recoilCount = 0;
+	}
+	
 	public int[][] getCoords(String tankFile){
 		LinkedList<String> coordsList = getFileContent(tankFile);
 		return toInt2D(coordsList);
@@ -18,16 +26,12 @@ public class Tank extends PolygonModel implements AI{
 
 	public Color[] getColors(String tankFile){
 		LinkedList<String> colorList = getFileContent(tankFile);
-		
 		return toColors(colorList);
 	}
 	
-	public Tank(int x, int y, int angle, String tankFile){
-		super(x, y, angle, tankFile);
-		
-		gun = new Gun(x, y, angle, "tank/norrisGun");
-		
-		recoilCount = 0;
+	public void update(){
+		super.update();
+		gun.update();
 	}
 	
 	public void draw(Graphics g){

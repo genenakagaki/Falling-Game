@@ -10,17 +10,6 @@ public class Gun extends PolygonModel{
 	private Projectile[] bullet = new Projectile[1000];
 	private int ammo;
 	
-	public int[][] getCoords(String gunCoordFile){
-		LinkedList<String> coordsList = getFileContent(gunCoordFile);
-		return toInt2D(coordsList);
-	}
-
-	public Color[] getColors(String gunFile){
-		LinkedList<String> colorList = getFileContent(gunFile);
-		
-		return toColors(colorList);
-	}
-	
 	public Gun(int x, int y, int angle, String gunFile){
 		super(x, y, angle, gunFile);
 			
@@ -34,10 +23,25 @@ public class Gun extends PolygonModel{
 		ammo = bullet.length;	
 	}
 	
+	public int[][] getCoords(String gunCoordFile){
+		LinkedList<String> coordsList = getFileContent(gunCoordFile);
+		return toInt2D(coordsList);
+	}
+
+	public Color[] getColors(String gunFile){
+		LinkedList<String> colorList = getFileContent(gunFile);
+		return toColors(colorList);
+	}
 	
 	public void update(){
+		super.update();
+		
 		if (reloading){
 			reload();
+		}
+		
+		for (int i = 0; i < bullet.length; i++){
+			bullet[i].update();
 		}
 	}
 	

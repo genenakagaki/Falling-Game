@@ -9,7 +9,6 @@ public class GameFramework{
 	public static void main(String[] args){
 		GameFramework game = new GameFramework();
 		game.run();
-		
 	}
 		
 	private DisplayMode[] DISPLAY_MODES = {
@@ -47,7 +46,7 @@ public class GameFramework{
 			DisplayMode displayMode = screen.findFirstCompatibleMode(DISPLAY_MODES);
 			screen.setFullScreen(displayMode, frame);
 			initialize();
-			animationLoop();
+			gameLoop();
 		}
 		finally{
 			screen.restoreScreen();
@@ -69,8 +68,7 @@ public class GameFramework{
 		return new ImageIcon(fileName).getImage();
 	}
 	
-	public void animationLoop(){
-		
+	public void gameLoop(){
 		while (running){
 			Graphics2D g = null;
 			g = screen.getGraphics();
@@ -87,8 +85,8 @@ public class GameFramework{
 	}
 	
 	public void gameUpdate(){
-		tank.getGun().update();
-		enemyTank.getGun().update();
+		tank.update();
+		enemyTank.update();
 		
 //		enemyTank.turnTowards(tank, 1);
 		enemyTank.moveTowards(tank, 1, 1);

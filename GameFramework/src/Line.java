@@ -22,10 +22,10 @@ public class Line {
 		int xv = x2 - x1;
 		int yv = y2 - y1;
 		
-		double mag_v = Math.sqrt(xv*xv + yv*yv);
+		double vMag = Math.sqrt(xv*xv + yv*yv);
 		
-		xc = xv / mag_v;
-		yc = yv / mag_v;
+		xc = xv / vMag;
+		yc = yv / vMag;
 		
 		xn =  yc;
 		yn = -xc;
