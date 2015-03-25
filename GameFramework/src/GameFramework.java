@@ -93,10 +93,14 @@ public class GameFramework{
 //		enemyTank.pointGunAt(tank, 1);
 		enemyTank.shootAt(tank, 1);
 		
-		if (W_pressed) tank.moveForwardBy(5);
-		if (S_pressed) tank.moveBackwardBy(3);
-		if (A_pressed) tank.rotateLeftBy(3);
-		if (D_pressed) tank.rotateRightBy(3);
+		if (tank.hasCollidedWith(enemyTank)){
+			tank.moveBackwardBy(30);
+		}
+		
+		if (W_pressed) tank.moveForwardBy(10);
+		if (S_pressed) tank.moveBackwardBy(6);
+		if (A_pressed) tank.rotateLeftBy(6);
+		if (D_pressed) tank.rotateRightBy(6);
 		
 		if (LT_pressed) tank.getGun().rotateLeftBy(2);
 		if (RT_pressed) tank.getGun().rotateRightBy(2);
@@ -109,6 +113,8 @@ public class GameFramework{
 		
 		tank.draw(g);
 		enemyTank.draw(g);
+		
+		
 	}
 
 	public class GameKeyListener implements KeyListener{

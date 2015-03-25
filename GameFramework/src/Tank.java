@@ -61,7 +61,7 @@ public class Tank extends PolygonModel implements AI{
 	}
 	
 	/* --------------------
-	       Overrides
+	        Movement
 	 -------------------- */
 	public void moveForwardBy(int dist){
 		if (boost){
@@ -89,6 +89,16 @@ public class Tank extends PolygonModel implements AI{
 	
 	public void setBoost(boolean boost){
 		this.boost = boost;
+	}
+	
+	public boolean hasCollidedWith(PolygonModel target) {
+		if ( gun.hasCollidedWith(target)
+				|| ((Tank)target).getGun().hasCollidedWith(this) ) {
+			
+			return true;
+		}
+		
+		return super.hasCollidedWith(target);
 	}
 
 	

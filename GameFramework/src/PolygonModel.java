@@ -5,20 +5,20 @@ import java.util.LinkedList;
 
 public abstract class PolygonModel {
 
+	// turning point
 	public double x;
 	public double y;
 
 	public int angle;
 	
-	public int[][] xCoords;
-	public int[][] yCoords;
+	public final int[][] xCoords;
+	public final int[][] yCoords;
 	public Color[] colors; 
 	
 	public int[][] xCurrent;
 	public int[][] yCurrent;
 	
-//	public int width;
-//	public int height;
+	public BoundingCircle boundingCircle;
 
 	public PolygonModel(int x, int y, int angle, String fileName){
 		this.x = x;
@@ -29,29 +29,11 @@ public abstract class PolygonModel {
 		xCoords = getCoords(fileName +"_x");
 		yCoords = getCoords(fileName +"_y");
 		colors  = getColors(fileName +"_color");
-		
+				
 		initCurrentCoords();
-		
-//		width = getWidth(yCoords);
-//		height = getWidth(xCoords);
+
+		boundingCircle = new BoundingCircle(x, y, xCoords, yCoords);
 	}
-	
-//	private int getWidth(int[][] coords){
-//		int max = 0;
-//		int min = 0;
-//		for (int i = 0; i < coords.length; i++){
-//			for (int j = 0; j < coords[i].length; i++){
-//				if (coords[i][j] > max){
-//					max = coords[i][j];
-//				}
-//				else if (coords[i][j] < min){
-//					min = coords[i][j];
-//				}
-//			}
-//		}
-//		
-//		return max - min;
-//	}
 	
 	private void initCurrentCoords(){
 		xCurrent = new int[xCoords.length][];
@@ -85,6 +67,9 @@ public abstract class PolygonModel {
 				yCurrent[poly][i] = (int)(yRotated + y);
 			}
 		}
+		
+		boundingCircle.xCurrent = (int)(boundingCircle.x * cosA - boundingCircle.y * sinA + x);
+		boundingCircle.yCurrent = (int)(boundingCircle.x * sinA + boundingCircle.y * cosA + y);
 	}
 	
 	public void draw(Graphics g){
@@ -97,12 +82,13 @@ public abstract class PolygonModel {
 				g.fillPolygon(xCurrent[poly], yCurrent[poly], numCoords);
 			}
 		}
+		boundingCircle.draw(g);
 	}
 
 	/* --------------------
 	        Movement
 	-------------------- */
-	public void moveBy(int dist, int angle){	
+	public void moveBy(int dist, int angle){
 		x += (dist * Lookup.cos[angle]);
 		y += (dist * Lookup.sin[angle]);
 	}
@@ -139,10 +125,68 @@ public abstract class PolygonModel {
 	}
 	
 	/* ------------------------------
-	       Collision detection
-	    (Separating Axis theorem)
+		   Collision detection
 	------------------------------ */
-//	public boolean hasCollidedWith(PolygonModel target){
+	public boolean hasCollidedWith(PolygonModel target) {
+		return boundingCircle.hasCollidedWith(target.boundingCircle);
+	}
+	
+	//	use x = target.xCurrent[i][r] as ray
+	
+	/* Ray Casting Algorithm
+	public boolean hasCollidedWith(PolygonModel target) {
+		double m;
+		double b;
+		double interceptY;
+		double xDiff;
+		int counter;
+		boolean condition;
+		
+		for (int i = 0; i < target.xCurrent.length; i++) {
+			if (target.xCurrent[i].length > 2) {
+				for (int r = 0; r < target.xCurrent[i].length; r++) {
+					counter = 0;
+					
+					for (int ii = 0; ii < this.xCurrent.length; ii++) {
+						if (this.xCurrent[ii].length > 2) {
+							for (int rr = 0; rr < this.xCurrent[ii].length - 1; rr++) {
+								xDiff = this.xCurrent[ii][rr] - this.xCurrent[ii][rr + 1];
+								if (xDiff != 0) {
+									m = (this.yCurrent[ii][rr] - this.yCurrent[ii][rr + 1])/(xDiff);
+									b = this.yCurrent[ii][rr] - m * this.xCurrent[ii][rr];
+									
+									interceptY = m * target.xCurrent[i][r] + b;
+									if (this.yCurrent[ii][rr] < this.yCurrent[ii][rr + 1]) {
+										condition = (interceptY >= this.yCurrent[ii][rr]) && (interceptY <= this.yCurrent[ii][rr + 1]);
+									} else {
+										condition = (interceptY <= this.yCurrent[ii][rr]) && (interceptY >= this.yCurrent[ii][rr + 1]);
+									}
+									
+									if (condition && (target.yCurrent[i][r] <= interceptY)) {
+										counter += 1;
+									}
+								} else {
+									condition = target.xCurrent[i][r] == this.xCurrent[ii][rr];
+									if (condition && (target.yCurrent[i][r] <= this.yCurrent[ii][rr])) {
+										counter += 1;
+									}
+								}
+							}
+						}
+					}
+					
+					if (counter % 2 == 1) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+	*/
+	
+//	    (Separating Axis theorem)
+//	public boolean hasCollidedWith(PolygonModel tar=get){
 //		int a;
 //		int b;
 //				

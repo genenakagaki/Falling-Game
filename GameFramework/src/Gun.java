@@ -7,7 +7,7 @@ public class Gun extends PolygonModel{
 	private boolean reloading;
 	private int reloadCount;
 
-	private Projectile[] bullet = new Projectile[1000];
+	private Projectile[] bullets = new Projectile[1000];
 	private int ammo;
 	
 	public Gun(int x, int y, int angle, String gunFile){
@@ -16,11 +16,11 @@ public class Gun extends PolygonModel{
 		reloading = false;
 		reloadCount = 0;
 		
-		for (int i = 0; i < bullet.length; i++){
-			bullet[i] = new Projectile(-10, -10, angle, "tank/projectile");
+		for (int i = 0; i < bullets.length; i++){
+			bullets[i] = new Projectile(-10, -10, angle, "tank/projectile");
 		}
 		
-		ammo = bullet.length;	
+		ammo = bullets.length;	
 	}
 	
 	public int[][] getCoords(String gunCoordFile){
@@ -40,25 +40,25 @@ public class Gun extends PolygonModel{
 			reload();
 		}
 		
-		for (int i = 0; i < bullet.length; i++){
-			bullet[i].update();
+		for (int i = 0; i < bullets.length; i++){
+			bullets[i].update();
 		}
 	}
 	
 	public void draw(Graphics g){
 		super.draw(g);
 		
-		for (int i = 0; i < bullet.length; i++){
-			bullet[i].draw(g);
+		for (int i = 0; i < bullets.length; i++){
+			bullets[i].draw(g);
 		}
 	}
 	
 	public void shoot(){
 		if (ammo > 0){
-			bullet[ammo-1] = new Projectile((int)x, (int)y, angle, "tank/projectile");
-			bullet[ammo-1].moveForwardBy(60);
+			bullets[ammo-1] = new Projectile((int)x, (int)y, angle, "tank/projectile");
+			bullets[ammo-1].moveForwardBy(60);
 			
-			bullet[ammo-1].shot = true;
+			bullets[ammo-1].shot = true;
 			
 			reload();
 			
@@ -79,10 +79,25 @@ public class Gun extends PolygonModel{
 		}
 	}
 	
+	public boolean hasCollidedWith(PolygonModel target){
+		for (int i = 0; i < bullets.length; i++){
+			if (bullets[i].hasCollidedWith(target)){
+				return true;
+			}
+		}
+		
+		return super.hasCollidedWith(target);
+	}
+	
+	
 	/* --------------------
 	    Boolean methods
 	-------------------- */
 	public boolean isReloading(){
 		return reloading;
+	}
+	
+	public Projectile[] getBullets(){
+		return bullets;
 	}
 }
