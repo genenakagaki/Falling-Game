@@ -1,5 +1,6 @@
-import java.awt.Graphics;
+package gene.tank;
 
+import java.awt.Graphics;
 
 public class BoundingCircle {
 	

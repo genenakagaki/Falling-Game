@@ -1,3 +1,4 @@
+package gene.graphics;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -65,8 +66,8 @@ public class ScreenManager{
 		return true;
 	}
 	
-	public void setFullScreen(DisplayMode displayMode, JFrame frame){
-//		JFrame frame = new JFrame();
+	public void setFullScreen(DisplayMode displayMode){
+		JFrame frame = new JFrame();
 		frame.setUndecorated(true);
 		frame.setIgnoreRepaint(true);
 		frame.setResizable(false);

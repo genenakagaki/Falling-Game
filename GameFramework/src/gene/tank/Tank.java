@@ -1,3 +1,7 @@
+package gene.tank;
+
+import gene.graphics.PolygonModel;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.LinkedList;

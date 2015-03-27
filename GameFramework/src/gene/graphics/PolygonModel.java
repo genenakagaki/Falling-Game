@@ -1,3 +1,7 @@
+package gene.graphics;
+
+import gene.tank.*;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.io.*;

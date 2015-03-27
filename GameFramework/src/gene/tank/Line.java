@@ -1,3 +1,5 @@
+package gene.tank;
+
 import java.awt.*;
 
 public class Line {

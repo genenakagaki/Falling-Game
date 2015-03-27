@@ -1,3 +1,7 @@
+package gene.tank;
+
+import gene.graphics.PolygonModel;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.LinkedList;
@@ -7,7 +11,7 @@ public class Gun extends PolygonModel{
 	private boolean reloading;
 	private int reloadCount;
 
-	private Projectile[] bullets = new Projectile[1000];
+	private Projectile[] bullets;
 	private int ammo;
 	
 	public Gun(int x, int y, int angle, String gunFile){
@@ -16,11 +20,13 @@ public class Gun extends PolygonModel{
 		reloading = false;
 		reloadCount = 0;
 		
-		for (int i = 0; i < bullets.length; i++){
-			bullets[i] = new Projectile(-10, -10, angle, "tank/projectile");
+		ammo = 1000;	
+		bullets = new Projectile[ammo];
+		
+		for (int i = 0; i < ammo; i++){
+			bullets[i] = new Projectile(-100, -100, angle, "tank/projectile");
 		}
 		
-		ammo = bullets.length;	
 	}
 	
 	public int[][] getCoords(String gunCoordFile){
@@ -55,10 +61,9 @@ public class Gun extends PolygonModel{
 	
 	public void shoot(){
 		if (ammo > 0){
-			bullets[ammo-1] = new Projectile((int)x, (int)y, angle, "tank/projectile");
+			bullets[ammo-1].setPosition((int)x, (int)y, angle);
 			bullets[ammo-1].moveForwardBy(60);
-			
-			bullets[ammo-1].shot = true;
+			bullets[ammo-1].shoot();
 			
 			reload();
 			
@@ -97,6 +102,9 @@ public class Gun extends PolygonModel{
 		return reloading;
 	}
 	
+	/* ------------------------------
+	       Get and Set methods
+	------------------------------ */
 	public Projectile[] getBullets(){
 		return bullets;
 	}

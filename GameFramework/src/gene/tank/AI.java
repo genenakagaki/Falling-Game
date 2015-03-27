@@ -1,3 +1,6 @@
+package gene.tank;
+import gene.graphics.PolygonModel;
+
 
 public interface AI{
 	
