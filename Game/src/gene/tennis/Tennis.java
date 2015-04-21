@@ -1,6 +1,7 @@
-package gene.tank;
+package gene.tennis;
 
 import gene.input.*;
+import gene.game.*;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -8,19 +9,12 @@ import java.text.AttributedCharacterIterator;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-public class GameFramework extends GameCore {
+public class Tennis extends GameCore {
 	
 	public static void main(String[] args) {
-		GameFramework game = new GameFramework();
+		Tennis game = new Tennis();
 		game.run();
 	}
-
-	private InputManager inputManager;
-		
-	private Tank tank;
-	private Tank enemyTank;
-	
-	private boolean paused;
 	
 	private boolean logging;
 	private LinkedList<String> logs = new LinkedList<String>();
@@ -32,6 +26,12 @@ public class GameFramework extends GameCore {
 		}
 	}
 	
+	private InputManager inputManager;
+
+	private boolean paused;
+	
+	private Camera camera;
+	
 	public void init() {
 		Window window = screen.getFullScreenWindow();
 		inputManager = new InputManager(window);
@@ -40,22 +40,20 @@ public class GameFramework extends GameCore {
 		window.setFocusTraversalKeysEnabled(false);
 		
 		loadImgs();
-		
 		createGameActions();
 		
-		tank = new Tank(100, 100, 0, "tank/norrisTank");
-		enemyTank = new Tank(300, 300, 0, "tank/norrisTank");
-		
 		paused = false;
-		logging = false;
+		
+		camera = new Camera(0, 0, 0, 100, window.getWidth());
 		
 		toggleDisplayFPS();
+		logging = false;
 	}
 
 	private Image bgImage;
 
 	public void loadImgs() {
-		bgImage = loadImg("images/bgImage.jpg");
+//		bgImage = loadImg("images/bgImage.jpg");
 	}
 	
 	private GameAction exit;
@@ -111,14 +109,6 @@ public class GameFramework extends GameCore {
 		checkSystemInput();
 		
 		if (!paused) {
-			tank.update();
-			enemyTank.update();
-			
-//			enemyTank.turnTowards(tank, 1);
-			enemyTank.moveTowards(tank, 1, 1);
-//			enemyTank.pointGunAt(tank, 1);
-			enemyTank.shootAt(tank, 1);
-			
 			collisionResponse();
 			
 			checkGameInput();
@@ -131,45 +121,13 @@ public class GameFramework extends GameCore {
 	}
 	
 	private void checkGameInput() {
-		if (forward.isExecuting())   tank.moveForwardBy(10);
-		if (backward.isExecuting())  tank.moveBackwardBy(6);
-		if (mainLeft.isExecuting())  tank.rotateLeftBy  (6);
-		if (mainRight.isExecuting()) tank.rotateRightBy (6);
-		
-		if (subLeft.isExecuting())  tank.getGun().rotateLeftBy(2);
-		if (subRight.isExecuting()) tank.getGun().rotateRightBy(2);
-		
-		if (shoot.isExecuting()) tank.shoot();
 	}
 	
 	private void collisionResponse() {
-		if (tank.hasCollidedWith(enemyTank)) {
-			tank.moveBackwardBy(30);
-			log("Collided");
-		}
-		
-		Projectile bullet = tank.hasBeenShotBy(enemyTank);
-		
-		if (bullet != null) {
-			bullet.setLife(0);
-			tank.moveBy(30, bullet.angle);
-			log("tank has been shot");
-		}
-		
-		bullet = enemyTank.hasBeenShotBy(tank);
-		
-		if (bullet != null) {
-			bullet.setLife(0);
-			enemyTank.moveBy(30, bullet.angle);
-			log("enemy has been shot");
-		}
 	}
 	
 	public void draw(Graphics2D g) {
-		g.drawImage(bgImage, 0, 0, null);
-		
-		tank.draw(g);
-		enemyTank.draw(g);
+//		g.drawImage(bgImage, 0, 0, null);
 		
 		if (logging) {
 			g.setColor(Color.black);

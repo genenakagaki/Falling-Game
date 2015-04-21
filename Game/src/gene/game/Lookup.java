@@ -1,4 +1,4 @@
-package gene.tank;
+package gene.game;
 
 public class Lookup {
 	

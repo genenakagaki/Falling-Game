@@ -26,7 +26,6 @@ public class Gun extends PolygonModel{
 		for (int i = 0; i < ammo; i++){
 			bullets[i] = new Projectile(-100, -100, angle, "tank/projectile");
 		}
-		
 	}
 	
 	public int[][] getCoords(String gunCoordFile){
@@ -84,17 +83,6 @@ public class Gun extends PolygonModel{
 		}
 	}
 	
-	public boolean hasCollidedWith(PolygonModel target){
-		for (int i = 0; i < bullets.length; i++){
-			if (bullets[i].hasCollidedWith(target)){
-				return true;
-			}
-		}
-		
-		return super.hasCollidedWith(target);
-	}
-	
-	
 	/* --------------------
 	    Boolean methods
 	-------------------- */
@@ -107,5 +95,9 @@ public class Gun extends PolygonModel{
 	------------------------------ */
 	public Projectile[] getBullets(){
 		return bullets;
+	}
+	
+	public int getAmmo() {
+		return ammo;
 	}
 }

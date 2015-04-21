@@ -1,13 +1,12 @@
-package gene.graphics;
+package gene.math;
 
-import gene.tank.*;
-
+import gene.game.*;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.io.*;
 import java.util.LinkedList;
 
-public abstract class PolygonModel {
+public abstract class Polygon2D {
 
 	// turning point
 	public double x;
@@ -24,7 +23,7 @@ public abstract class PolygonModel {
 	
 	public BoundingCircle boundingCircle;
 
-	public PolygonModel(int x, int y, int angle, String fileName){
+	public Polygon2D(int x, int y, int angle, String fileName){
 		this.x = x;
 		this.y = y;
 		
@@ -98,7 +97,8 @@ public abstract class PolygonModel {
 	}
 	
 	public void moveForwardBy(int dist){
-		moveBy(dist, angle);
+		x += (dist * Lookup.cos[angle]);
+		y += (dist * Lookup.sin[angle]);
 	}
 	
 	public void moveBackwardBy(int dist){
@@ -131,7 +131,7 @@ public abstract class PolygonModel {
 	/* ------------------------------
 		   Collision detection
 	------------------------------ */
-	public boolean hasCollidedWith(PolygonModel target) {
+	public boolean hasCollidedWith(Polygon2D target) {
 		return boundingCircle.hasCollidedWith(target.boundingCircle);
 	}
 	
@@ -215,7 +215,7 @@ public abstract class PolygonModel {
 	---------- */
 	// is to left  if negative
 	// is to right if negative 
-	public int angleTo(PolygonModel target){
+	public int angleTo(Polygon2D target){
 		double cosA = Lookup.cos[angle];
 		double sinA = Lookup.sin[angle];
 

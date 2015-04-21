@@ -15,7 +15,7 @@ public class Tank extends PolygonModel implements AI{
 	private int recoilCount;
 	private int recoilAngle;
 	
-	public Tank(int x, int y, int angle, String tankFile){
+	public Tank(int x, int y, int angle, String tankFile) {
 		super(x, y, angle, tankFile);
 		
 		gun = new Gun(x, y, angle, "tank/norrisGun");
@@ -23,26 +23,26 @@ public class Tank extends PolygonModel implements AI{
 		recoilCount = 0;
 	}
 	
-	public int[][] getCoords(String tankFile){
+	public int[][] getCoords(String tankFile) {
 		LinkedList<String> coordsList = getFileContent(tankFile);
 		return toInt2D(coordsList);
 	}
 
-	public Color[] getColors(String tankFile){
+	public Color[] getColors(String tankFile) {
 		LinkedList<String> colorList = getFileContent(tankFile);
 		return toColors(colorList);
 	}
 	
-	public void update(){
+	public void update() {
 		super.update();
 		gun.update();
 	}
 	
-	public void draw(Graphics g){
+	public void draw(Graphics g) {
 		super.draw(g);
 		gun.draw(g);
 		
-		if (recoilCount > 0){
+		if (recoilCount > 0) {
 			if (recoilCount > 4) {
 				moveBy(1, recoilAngle);
 			}
@@ -52,8 +52,8 @@ public class Tank extends PolygonModel implements AI{
 		}
 	}
 	
-	public void shoot(){
-		if (!gun.isReloading() && !boost){
+	public void shoot() {
+		if (!gun.isReloading() && !boost) {
 			gun.shoot();
 			
 			moveBy(-5, gun.angle);
@@ -67,8 +67,13 @@ public class Tank extends PolygonModel implements AI{
 	/* --------------------
 	        Movement
 	 -------------------- */
-	public void moveForwardBy(int dist){
-		if (boost){
+	public void moveBy(int dist, int angle) {
+		super.moveBy(dist, angle);
+		gun.moveBy(dist, angle);
+	}
+	
+	public void moveForwardBy(int dist) {
+		if (boost) {
 			super.moveForwardBy(dist * 3);
 			gun.moveForwardBy(dist * 3);
 		}
@@ -76,33 +81,51 @@ public class Tank extends PolygonModel implements AI{
 		gun.moveBy(dist, angle);
 	}
 	
-	public void moveBackwardBy(int dist){
+	public void moveBackwardBy(int dist) {
 		super.moveBackwardBy(dist);
 		gun.moveBy(-dist, angle);
 	}
 	
-	public void rotateLeftBy(int degrees){
+	public void rotateLeftBy(int degrees) {
 		super.rotateLeftBy(degrees);
 		gun.rotateLeftBy(degrees);
 	}
 	
-	public void rotateRightBy(int degrees){
+	public void rotateRightBy(int degrees) {
 		super.rotateRightBy(degrees);
 		gun.rotateRightBy(degrees);
 	}
 	
-	public void setBoost(boolean boost){
+	public void setBoost(boolean boost) {
 		this.boost = boost;
 	}
 	
+	/* --------------------
+	       Collision
+	-------------------- */
 	public boolean hasCollidedWith(PolygonModel target) {
-		if ( gun.hasCollidedWith(target)
+		if (gun.hasCollidedWith(target)
 				|| ((Tank)target).getGun().hasCollidedWith(this) ) {
 			
 			return true;
 		}
 		
 		return super.hasCollidedWith(target);
+	}
+	
+	public Projectile hasBeenShotBy(Tank target) {
+		Projectile[] bullets = target.gun.getBullets();
+		
+		for (int i = 0; i < bullets.length; i ++) {
+			Projectile bullet = bullets[i];
+			if (bullet.isShot()) {
+				if (bullet.hasCollidedWith(this)) {
+					return bullet;
+				}
+			}
+		}
+		
+		return null;
 	}
 
 	
@@ -112,22 +135,22 @@ public class Tank extends PolygonModel implements AI{
 	public void turnTowards(PolygonModel target, int degrees) {
 		int angleToTarget = angleTo(target);
 		
-		if (angleToTarget > 0){
-			if (angleToTarget > 10){
+		if (angleToTarget > 0) {
+			if (angleToTarget > 10) {
 				rotateRightBy(degrees);
 			}
-			else if (angleToTarget > 5){
+			else if (angleToTarget > 5) {
 				rotateRightBy(degrees/2);
 			}
 			else{
 				rotateRightBy(1);
 			}
 		}
-		else if (angleToTarget < 0){
-			if (angleToTarget < -10){
+		else if (angleToTarget < 0) {
+			if (angleToTarget < -10) {
 				rotateLeftBy(degrees);
 			}
-			else if (angleToTarget < -5){
+			else if (angleToTarget < -5) {
 				rotateLeftBy(degrees/2);
 			}
 			else{
@@ -136,21 +159,21 @@ public class Tank extends PolygonModel implements AI{
 		}
 	}
 	
-	public void moveTowards(PolygonModel target, int speed, int degrees){
-		if (angleTo(target) > 0){
+	public void moveTowards(PolygonModel target, int speed, int degrees) {
+		if (angleTo(target) > 0) {
 			rotateRightBy(degrees);
 		}
-		else if (angleTo(target) < 0){
+		else if (angleTo(target) < 0) {
 			rotateLeftBy(degrees);
 		}
 
 		moveForwardBy(speed);
 	}
 	
-	public void shootAt(PolygonModel target, int degrees){
+	public void shootAt(PolygonModel target, int degrees) {
 		int angleToTarget = gun.angleTo(target);
 		
-		if (angleToTarget < 2 && angleToTarget > -2){
+		if (angleToTarget < 2 && angleToTarget > -2) {
 			shoot();
 		}
 		else{
@@ -158,25 +181,25 @@ public class Tank extends PolygonModel implements AI{
 		}
 	}
 	
-	public void pointGunAt(PolygonModel target, int degrees){
+	public void pointGunAt(PolygonModel target, int degrees) {
 		int angleToTarget = gun.angleTo(target);
 		
-		if (angleToTarget > 0){
-			if (angleToTarget > 10){
+		if (angleToTarget > 0) {
+			if (angleToTarget > 10) {
 				gun.rotateRightBy(degrees);
 			}
-			else if (angleToTarget > 5){
+			else if (angleToTarget > 5) {
 				gun.rotateRightBy(degrees/2);
 			}
 			else{
 				gun.rotateRightBy(1);
 			}
 		}
-		else if (angleToTarget < 0){
-			if (angleToTarget < -10){
+		else if (angleToTarget < 0) {
+			if (angleToTarget < -10) {
 				gun.rotateLeftBy(degrees);
 			}
-			else if (angleToTarget < -5){
+			else if (angleToTarget < -5) {
 				gun.rotateLeftBy(degrees/2);
 			}
 			else{
@@ -189,7 +212,7 @@ public class Tank extends PolygonModel implements AI{
 	/* ------------------------
 	    Get and Set methods
 	------------------------ */
-	public Gun getGun(){
+	public Gun getGun() {
 		return gun;
 	}
 }

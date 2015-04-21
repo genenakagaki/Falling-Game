@@ -1,4 +1,4 @@
-package gene.tank;
+package gene.game;
 
 import gene.graphics.ScreenManager;
 
@@ -7,10 +7,10 @@ import java.awt.event.*;
 
 import javax.swing.ImageIcon;
 
-public abstract class GameCore implements KeyListener,
-										  MouseListener,
-										  MouseMotionListener,
-										  MouseWheelListener {
+public abstract class GameCore  implements KeyListener,
+										   MouseListener,
+										   MouseMotionListener,
+									  	   MouseWheelListener {
 	
 	private boolean D = Lookup.DEBUG;
 	
