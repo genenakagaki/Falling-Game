@@ -2,6 +2,7 @@ package gene.tennis;
 
 import gene.input.*;
 import gene.game.*;
+import gene.math.*;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -30,7 +31,8 @@ public class Tennis extends GameCore {
 
 	private boolean paused;
 	
-	private Camera camera;
+	private static Camera camera;
+	private Polygon3D unko;
 	
 	public void init() {
 		Window window = screen.getFullScreenWindow();
@@ -44,7 +46,9 @@ public class Tennis extends GameCore {
 		
 		paused = false;
 		
-		camera = new Camera(0, 0, 0, 100, window.getWidth());
+		camera = new Camera(0, 0, 0, 0, 100, window.getWidth());
+		
+		unko = new Polygon3D(0, 0, 0);
 		
 		toggleDisplayFPS();
 		logging = false;
@@ -144,6 +148,10 @@ public class Tennis extends GameCore {
 		}
 		
 		displayInfo(g);
+	}
+	
+	public static ViewWindow getViewWindow() {
+		return camera.getViewWindow();
 	}
 	
 	//--------------------------------------------------------------------------------//

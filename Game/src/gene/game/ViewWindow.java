@@ -4,37 +4,33 @@ import gene.math.*;
 
 public class ViewWindow {
 	
-	private Point3D coord;
+	private int x, y, z;
 	
-	private int width;
-		
-	private int viewAngle;
 	private int cameraDist;
 	
-	public ViewWindow(Point3D cameraLocation, int viewAngle, int width) {
-		this.coord = cameraLocation;
-		this.viewAngle  = viewAngle;
-		this.width = width;
+	public ViewWindow(int x, int y, int z, int viewAngle, int windowWidth) {
+		this.x = x;
+		this.y = y;
+		this.z = z;
 		
-		cameraDist = calcDist(viewAngle, width);
+		cameraDist = calcDist(viewAngle, windowWidth);
 		
-		coord.z += cameraDist;
+		this.z += cameraDist;
 	}
 	
 	public void setPosition(int x, int y) {
-		coord.x = x;
-		coord.y = y;
-	}
-	
-	public void project(Point3D p) {
-		p.x = cameraDist * p.x / -p.z;
-		p.y = cameraDist * p.y / -p.z;
+		this.x = x;
+		this.y = y;
 	}
 	
 	private int calcDist(int angle, int width) {
 		double radAngle = angle/180 * Math.PI;
 		
 		return (int)((width/2) / Math.tan(radAngle));
+	}
+	
+	public int getCameraDist() {
+		return cameraDist;
 	}
 
 }

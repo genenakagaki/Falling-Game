@@ -38,6 +38,7 @@ public abstract class GameCore  implements KeyListener,
 		}
 		finally{
 			screen.restoreScreen();
+			System.exit(0);
 		}
 	}
 	
